@@ -1,0 +1,9 @@
+.Wrap {
+    width: 85%;
+    height: 35vh;
+    background-color: rgb(24 , 25 , 32);
+    margin-left: 108px;
+    border-radius: 12px;
+    margin-top: 20px;
+    padding: 20px 30px;
+}
