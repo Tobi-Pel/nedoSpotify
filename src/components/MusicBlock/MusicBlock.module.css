@@ -1,0 +1,13 @@
+.MusicBlock {
+    width: 1000px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: rgb(10, 8, 26);
+    font-size: 23px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}

@@ -1,0 +1,4 @@
+.Forward {
+    transform: rotate(180deg);
+    width: 50px;
+}

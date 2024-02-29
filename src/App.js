@@ -1,14 +1,22 @@
-import React, { useRef, useState } from "react";
-import './global.css'
-import GenreButton from "./components/GenreButton/GenreButton";
-import InputMusic from "./components/InputMusic/InputMusic";
-import Wrap from "./components/Wrap/Wrap";
-import Slider from "./components/slider/Slider";
-import muzic1 from './audios/apple.mp3'
-import ControlPanel from './components/controls/ControlPanel'
+import React, { useState , useRef } from "react";
+import "./global.css"
+import Button from "./Components/MyButton/Button";
+import Input from "./Components/Input/Input";
+import Name from "./Components/NameOfMusic/Name";
+import PlayImage from "./Components/PlayImage/PlayImage";
+import Arrow from "./Components/Arrows/Arrow";
+import RandomImage from "./Components/RandomImage/RandomImage";
+import Forward from "./Components/Forward/Forward";
+import Forward2 from "./Components/Forward2/Forward2";
+import Slider from "./Components/slider/Slider";
+import ControlPanel from "./Components/controls/ControlPanel";
+import MusicBlock from "./Components/MusicBlock/MusicBlock";
 
 function App() {
-  const [music , setMusic] = useState([]);
+  const [music , setMusic] = useState([
+    {name: "Apple" , url: require("./audios/apple.mp3")} ,
+    {name: "Light" , url: require("./audios/The_Smiths_-_There_Is_A_Light_That_Never_Goes_Out_48159346.mp3")}
+  ]);
   const [currentMusic , setCurrentMusic] = useState("");
 
   const [percentage, setPercentage] = useState(0)
@@ -75,38 +83,61 @@ function App() {
     }
   }
 
+  const [curUrl , setCurUrl] = useState(music[0].url);
+  const [curName , setCurName] = useState(music[0].name);
+
+  const ListMusic = music.map((item) => {
+    if(item.name.includes(currentMusic) && currentMusic !== ""){
+      return <MusicBlock onClick={() => {
+        setCurUrl(item.url)
+        setCurName(item.name)
+      }}>{item.name}</MusicBlock>
+    }
+  })
 
   return (
     <div className="App">
-      <div style={{display : "flex" , justifyContent : "center" , gap : "10px" , marginTop : "30px"}}>
-        <GenreButton>house</GenreButton>
-        <GenreButton>dnb</GenreButton>
-        <GenreButton>dubstep</GenreButton>
-        </div>
-        <InputMusic setCurrentMusic={setCurrentMusic} currentMusic={currentMusic}>{currentMusic}</InputMusic>
-        <Wrap>
-          <div className="collector">
-            <div className="white-words">Name of song</div>
-            <div className="white-words">{secondsToHms(currentTime)} / {secondsToHms(duration)}</div>
+      <div className="App-inner">
+        <heading>
+          <Button>house</Button>
+          <Button>dnb</Button>
+          <Button>dubstep</Button>
+        </heading>
+        <Input setCurrentMusic={setCurrentMusic} currentMusic={currentMusic}>{currentMusic}</Input>
+        <div className="Music-placeholder">
+          <div className="at">
+            <Name>{curName}</Name>
+            <p className="time">{secondsToHms(currentTime)} / {secondsToHms(duration)}</p>
           </div>
           <Slider percentage={percentage} onChange={onChange} />
-      <audio
-        ref={audioRef}
-        onTimeUpdate={getCurrDuration}
-        onLoadedData={(e) => {
-          setDuration(e.currentTarget.duration.toFixed(2))
-        }}
-        src={muzic1}
-      ></audio>
-      <ControlPanel
-        play={play}
-        isPlaying={isPlaying}
-        duration={duration}
-        currentTime={currentTime}
-      />
-        </Wrap>
+          <audio
+          ref={audioRef}
+          onTimeUpdate={getCurrDuration}
+          onLoadedData={(e) => {
+            setDuration(e.currentTarget.duration.toFixed(2))
+          }}
+            src={curUrl}
+        ></audio>
+        
+          <div className="bottom">
+            <Arrow/>
+            <Forward/>
+            <ControlPanel
+            play={play}
+            isPlaying={isPlaying}
+            duration={duration}
+            currentTime={currentTime}
+        />
+            <Forward2/>
+            <RandomImage></RandomImage>
+          </div>
+        </div>
 
-     </div>
+        <div className="list-of-music" >
+          {ListMusic}
+        </div>
+      </div>
+    </div>
   );
 }
 
